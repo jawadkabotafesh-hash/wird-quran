@@ -9,7 +9,8 @@
         .card { background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1); }
         h1 { color: #2ecc71; font-size: 1.5rem; margin-bottom: 5px; }
         .wird-text { font-weight: bold; color: #f1c40f; font-size: 1.2rem; margin: 5px 0; }
-        .quran-container { width: 100%; height: 80vh; border-radius: 10px; overflow: hidden; border: 2px solid #2ecc71; background: white; }
+        .visitor-counter { font-size: 0.9rem; color: #bdc3c7; margin-top: 10px; }
+        .quran-container { width: 100%; height: 75vh; border-radius: 10px; overflow: hidden; border: 2px solid #2ecc71; background: white; }
         iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
@@ -17,7 +18,12 @@
 
     <div class="card">
         <h1>📖 ورد القرآن اليومي</h1>
-        <div id="wird-info" class="wird-text">جاري تحضير وردك اليومي...</div>
+        <div id="wird-info" class="wird-text">جاري تحضير وردك...</div>
+        
+        <div class="visitor-counter">
+            عدد الزيارات للموقع: 
+            <img src="https://hitwebcounter.com/counter/counter.php?page=wirdquran_jawad&style=0006&nbdigits=5&type=page&initCount=0" title="Free Counter" Alt="web counter" border="0" style="vertical-align: middle;">
+        </div>
     </div>
 
     <div class="quran-container">
@@ -25,19 +31,16 @@
     </div>
 
     <script>
-        // تاريخ البداية (اليوم 19 فبراير 2026)
-        const startDate = new Date(2026, 1, 19); // شهر 1 يعني فبراير في البرمجة
+        // تثبيت البداية: اليوم 19 فبراير 2026 هو الجزء 1
+        const startDate = new Date(2026, 1, 19); 
         const today = new Date();
         
-        // حساب فرق الأيام بين اليوم وتاريخ البداية
         const diffTime = Math.abs(today - startDate);
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
         
-        // الجزء يبدأ من 1 ويزيد كل يوم، وإذا وصل 30 يرجع يعيد
         const juzNumber = (diffDays % 30) + 1;
 
-        // تحديث واجهة الموقع
-        document.getElementById("wird-info").innerText = "اليوم هو البداية: الجزء رقم " + juzNumber;
+        document.getElementById("wird-info").innerText = "اليوم الأول: الجزء رقم " + juzNumber;
         document.getElementById("quran-frame").src = "https://quran.com/juz/" + juzNumber;
     </script>
 

@@ -8,28 +8,17 @@
     <style>
         :root { --primary: #2ecc71; --accent: #f1c40f; --bg: #0f2027; }
         body { font-family: 'Segoe UI', sans-serif; background: #0f2027; color: white; margin: 0; padding: 10px; text-align: center; }
-        
-        /* 1. ذكر الصدقة الجارية */
         .charity-header { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 12px; border-radius: 15px; font-weight: bold; margin-bottom: 10px; }
-        
         .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; }
-        
-        /* 2. أزرار التحكم والسبحة والمشاركة */
         .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
         button { padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; }
         .btn-sebha { background: var(--accent); color: #000; }
         .btn-share { background: #25D366; color: white; }
-
-        /* 3. واجهة السبحة */
         #sebha-display { display: none; margin-top: 10px; padding: 15px; background: rgba(46, 204, 113, 0.2); border-radius: 15px; border: 1px solid var(--primary); }
-        
-        /* 4. حاوية المصحف الورقي */
-        .quran-container { background: #f4f4f4; border-radius: 15px; padding: 5px; margin-top: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .quran-container { background: white; border-radius: 15px; padding: 5px; margin-top: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); min-height: 400px; }
         .quran-page { width: 100%; max-width: 500px; border-radius: 10px; display: block; margin: auto; }
-
-        /* أزرار تقليب الصفحات */
         .nav-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; background: #222; padding: 10px; border-radius: 12px; }
-        .nav-btn { background: var(--primary); color: white; padding: 8px 15px; border-radius: 8px; }
+        .nav-btn { background: var(--primary); color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -41,12 +30,10 @@
 
 <div class="glass-card">
     <div style="font-size: 1.1rem; color: var(--primary); font-weight: bold; margin-bottom: 10px;">🌙 ورد 1 رمضان - الجزء الأول</div>
-    
     <div class="btn-grid">
         <button class="btn-sebha" onclick="toggleSebha()">📿 السبحة</button>
         <button class="btn-share" onclick="shareApp()">📢 انشر الأجر</button>
     </div>
-    
     <div id="sebha-display">
         <div id="count-num" style="font-size: 2rem; margin-bottom: 10px;">0</div>
         <button onclick="addCount()" style="width: 70px; height: 70px; border-radius: 50%; background: var(--primary); border: none; color: white; font-size: 1rem;">سبّح</button>
@@ -54,44 +41,39 @@
 </div>
 
 <div class="quran-container">
-    <img id="quran-img" src="https://pcloud.github.io/quran-data/images/1.png" class="quran-page" alt="صفحة المصحف">
-    
+    <img id="quran-img" src="https://mushaf.me/raw/p/1.png" class="quran-page" alt="صفحة المصحف" onerror="this.src='https://kingfahadcomplex.com/wp-content/uploads/2021/01/001.png'">
     <div class="nav-controls" dir="ltr">
-        <button class="nav-btn" onclick="prevPage()">التالي ◀</button>
+        <button class="nav-btn" onclick="prevPage()">السابق</button>
         <div class="page-info" style="color: white;">صفحة <span id="page-num">1</span></div>
-        <button class="nav-btn" onclick="nextPage()">▶ السابق</button>
+        <button class="nav-btn" onclick="nextPage()">التالي</button>
     </div>
-</div>
-
-<div style="margin-top: 20px; opacity: 0.5;">
-    <img src="https://hitwebcounter.com/counter/counter.php?page=wirdquran_shamsia&style=0006&nbdigits=5&type=page&initCount=0" border="0">
 </div>
 
 <script>
     let currentPage = 1; 
 
     function updatePage() {
-        document.getElementById("quran-img").src = `https://pcloud.github.io/quran-data/images/${currentPage}.png`;
+        // نستخدم رابط بديل موثوق
+        const imgUrl = `https://mushaf.me/raw/p/${currentPage}.png`;
+        document.getElementById("quran-img").src = imgUrl;
         document.getElementById("page-num").innerText = currentPage;
-        // العودة لأعلى الصفحة لرؤية بداية الصفحة الجديدة
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function nextPage() { if (currentPage > 1) { currentPage--; updatePage(); } }
-    function prevPage() { if (currentPage < 604) { currentPage++; updatePage(); } }
+    // تعديل أزرار التالي والسابق لتعمل بشكل طبيعي مع أرقام الصفحات
+    function nextPage() { if (currentPage < 604) { currentPage++; updatePage(); } }
+    function prevPage() { if (currentPage > 1) { currentPage--; updatePage(); } }
 
     function toggleSebha() {
         const d = document.getElementById("sebha-display");
         d.style.display = (d.style.display === "block") ? "none" : "block";
     }
-    
     function addCount() {
         let n = document.getElementById("count-num");
         n.innerText = parseInt(n.innerText) + 1;
     }
-
     function shareApp() {
-        const msg = `🌙 ورد 1 رمضان - صدقة جارية عن روح المرحومة شمسية أم شكري. تابع معي الورد والسبحة من هنا:\n${window.location.href}`;
+        const msg = `🌙 ورد 1 رمضان - صدقة جارية عن روح المرحومة شمسية أم شكري:\n${window.location.href}`;
         window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(msg));
     }
 </script>

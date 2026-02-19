@@ -3,88 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق وردي الاحترافي</title>
-    
+    <title>وردي - الورد اليومي وعداد رمضان</title>
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2800/2800115.png">
-    
     <style>
         :root { --primary: #2ecc71; --accent: #f1c40f; --bg: #0f2027; }
-        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #0f2027, #2c5364); color: white; margin: 0; padding: 10px; }
-        .glass-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 20px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h1 { color: var(--primary); margin: 0; font-size: 1.5rem; }
-        .audio-player { width: 100%; margin: 15px 0; border-radius: 10px; height: 40px; }
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        button { padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f2027; color: white; margin: 0; padding: 10px; overflow-x: hidden; }
+        
+        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; }
+        
+        /* تصميم عداد رمضان */
+        .ramadan-timer { background: linear-gradient(45deg, #d4ad68, #a67c00); color: #000; padding: 8px; border-radius: 12px; font-weight: bold; font-size: 0.9rem; margin-bottom: 10px; box-shadow: 0 4px 15px rgba(212, 173, 104, 0.3); }
+
+        h1 { font-size: 1.2rem; color: var(--primary); margin: 5px 0; }
+        .juz-badge { color: var(--accent); font-weight: bold; font-size: 1rem; margin: 5px 0; display: block; }
+        
+        .audio-player { width: 100%; margin: 10px 0; height: 35px; border-radius: 10px; }
+        
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        button { padding: 10px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.85rem; }
         .btn-sebha { background: var(--accent); color: #000; }
         .btn-share { background: #25D366; color: white; }
-        .quran-view { width: 100%; height: 70vh; border-radius: 15px; border: 2px solid var(--primary); background: white; }
-        .sebha-area { display: none; margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.4); border-radius: 15px; }
-        #counter { font-size: 2rem; color: var(--accent); display: block; }
+
+        .quran-view { width: 100%; height: 75vh; border-radius: 15px; border: 1px solid var(--primary); background: white; }
+        
+        #sebha-display { display: none; margin-top: 10px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 10px; }
     </style>
 </head>
 <body>
 
 <div class="glass-card">
-    <h1>✨ وردي: المصحف الصوتي</h1>
-    <p id="juz-name" style="color: var(--accent); font-weight: bold; margin: 10px 0;"></p>
+    <div class="ramadan-timer" id="ramadan-countdown">جاري حساب موعد رمضان...</div>
+
+    <h1>✨ وردي اليومي</h1>
+    <span id="juz-name" class="juz-badge"></span>
     
-    <p style="font-size: 0.8rem; margin-bottom: 5px;">استمع للجزء بصوت الشيخ المنشاوي:</p>
     <audio id="audio-player" class="audio-player" controls>
         <source id="audio-source" src="" type="audio/mpeg">
     </audio>
 
     <div class="btn-grid">
         <button class="btn-sebha" onclick="toggleSebha()">📿 السبحة الإلكترونية</button>
-        <button class="btn-share" onclick="shareApp()">📢 انشر الموقع</button>
+        <button class="btn-share" onclick="shareApp()">📢 مشاركة الموقع</button>
     </div>
 
-    <div id="sebha-area" class="sebha-area">
-        <span id="counter">0</span>
-        <button onclick="count()" style="width:100%; height:60px; border-radius:50%; font-size:1.5rem; background:var(--primary); color:white;">اضغط للتسبيح</button>
-        <button onclick="resetCount()" style="margin-top:10px; background:transparent; color:red; font-size:0.8rem;">تصفير</button>
+    <div id="sebha-display">
+        <div style="font-size: 1.5rem; color: var(--accent);" id="count-num">0</div>
+        <button onclick="addCount()" style="width:100%; background:var(--primary); color:white; margin-top:5px;">سبّح</button>
     </div>
 </div>
 
 <iframe id="quran-frame" class="quran-view" src=""></iframe>
 
 <script>
+    // 1. حساب الجزء (البداية 19 فبراير)
     const startDate = new Date(2026, 1, 19); 
     const today = new Date();
     const diffDays = Math.floor(Math.abs(today - startDate) / (1000 * 60 * 60 * 24));
     const juz = (diffDays % 30) + 1;
 
-    document.getElementById("juz-name").innerText = "أنت الآن تقرأ الجزء رقم: " + juz;
+    document.getElementById("juz-name").innerText = "أنت الآن في الجزء رقم: " + juz;
     document.getElementById("quran-frame").src = `https://quran.com/juz/${juz}?view=reading`;
     
     const audioUrl = `https://download.quranicaudio.com/quran/muhammad_siddeeq_al-minshaawee/juz${juz.toString().padStart(2, '0')}.mp3`;
     document.getElementById("audio-source").src = audioUrl;
     document.getElementById("audio-player").load();
 
-    let c = 0;
+    // 2. عداد رمضان (المتوقع 1 مارس 2026)
+    const ramadanDate = new Date(2026, 2, 1); 
+    const timeDiff = ramadanDate - today;
+    const daysToRamadan = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    
+    const timerElement = document.getElementById("ramadan-countdown");
+    if (daysToRamadan > 0) {
+        timerElement.innerText = `🌙 متبقي على شهر رمضان: ${daysToRamadan} أيام`;
+    } else if (daysToRamadan === 0) {
+        timerElement.innerText = `🌙 مبارك عليكم شهر رمضان!`;
+    } else {
+        timerElement.style.display = "none"; 
+    }
+
+    // 3. وظائف السبحة
+    let sCount = 0;
     function toggleSebha() {
-        const area = document.getElementById("sebha-area");
-        area.style.display = (area.style.display === "block") ? "none" : "block";
+        const d = document.getElementById("sebha-display");
+        d.style.display = (d.style.display === "block") ? "none" : "block";
     }
-    function count() {
-        c++;
-        document.getElementById("counter").innerText = c;
-    }
-    function resetCount() {
-        c = 0;
-        document.getElementById("counter").innerText = c;
+    function addCount() {
+        sCount++;
+        document.getElementById("count-num").innerText = sCount;
     }
 
     function shareApp() {
-        const msg = `موقع رائع لمتابعة وردك اليومي (قرآن، صوت، سبحة، وأذكار). ابدأ من هنا:\n${window.location.href}`;
+        const msg = `موقعي لورد القرآن اليومي، مريح جداً وفيه عداد لرمضان وصوت المنشاوي. جربه:\n${window.location.href}`;
         window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`);
     }
-
-    // رسالة ترحيبية احترافية
-    window.onload = () => {
-        setTimeout(() => {
-            alert("أهلاً بك في وردك اليومي. لسهولة الوصول، أضف التطبيق لشاشتك الرئيسية 📲");
-        }, 1000);
-    };
 </script>
 
 </body>

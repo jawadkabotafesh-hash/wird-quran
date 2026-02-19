@@ -7,18 +7,33 @@
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2800/2800115.png">
     <style>
         :root { --primary: #2ecc71; --accent: #f1c40f; --bg: #0f2027; }
-        body { font-family: 'Segoe UI', sans-serif; background: #0f2027; color: white; margin: 0; padding: 10px; text-align: center; }
-        .charity-header { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 12px; border-radius: 15px; font-weight: bold; margin-bottom: 10px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f2027; color: white; margin: 0; padding: 10px; text-align: center; overflow-x: hidden; }
+        
+        /* الهيدر الخاص بالصدقة */
+        .charity-header { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 12px; border-radius: 15px; font-weight: bold; margin-bottom: 10px; font-size: 0.95rem; }
+        
         .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; }
+        
         .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-        button { padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        button { padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
         .btn-sebha { background: var(--accent); color: #000; }
         .btn-share { background: #25D366; color: white; }
+
+        /* منطقة السبحة */
         #sebha-display { display: none; margin-top: 10px; padding: 15px; background: rgba(46, 204, 113, 0.2); border-radius: 15px; border: 1px solid var(--primary); }
-        .quran-container { background: white; border-radius: 15px; padding: 5px; margin-top: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); min-height: 400px; }
-        .quran-page { width: 100%; max-width: 500px; border-radius: 10px; display: block; margin: auto; }
-        .nav-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; background: #222; padding: 10px; border-radius: 12px; }
-        .nav-btn { background: var(--primary); color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; }
+        #count-num { font-size: 2.5rem; color: var(--accent); display: block; margin-bottom: 10px; }
+
+        /* حاوية المصحف السلسة جداً */
+        .quran-container { 
+            width: 100%; 
+            height: 75vh; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            border: 2px solid var(--primary); 
+            background: white; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
@@ -30,50 +45,44 @@
 
 <div class="glass-card">
     <div style="font-size: 1.1rem; color: var(--primary); font-weight: bold; margin-bottom: 10px;">🌙 ورد 1 رمضان - الجزء الأول</div>
+    
     <div class="btn-grid">
-        <button class="btn-sebha" onclick="toggleSebha()">📿 السبحة</button>
+        <button class="btn-sebha" onclick="toggleSebha()">📿 السبحة الإلكترونية</button>
         <button class="btn-share" onclick="shareApp()">📢 انشر الأجر</button>
     </div>
+
     <div id="sebha-display">
-        <div id="count-num" style="font-size: 2rem; margin-bottom: 10px;">0</div>
-        <button onclick="addCount()" style="width: 70px; height: 70px; border-radius: 50%; background: var(--primary); border: none; color: white; font-size: 1rem;">سبّح</button>
+        <span id="count-num">0</span>
+        <button onclick="addCount()" style="width: 80px; height: 80px; border-radius: 50%; background: var(--primary); border: none; color: white; font-size: 1.2rem; cursor: pointer;">سبّح</button>
+        <br>
+        <button onclick="resetCount()" style="background:transparent; color:red; margin-top:10px; font-size:0.7rem;">تصفير</button>
     </div>
 </div>
 
 <div class="quran-container">
-    <img id="quran-img" src="https://mushaf.me/raw/p/1.png" class="quran-page" alt="صفحة المصحف" onerror="this.src='https://kingfahadcomplex.com/wp-content/uploads/2021/01/001.png'">
-    <div class="nav-controls" dir="ltr">
-        <button class="nav-btn" onclick="prevPage()">السابق</button>
-        <div class="page-info" style="color: white;">صفحة <span id="page-num">1</span></div>
-        <button class="nav-btn" onclick="nextPage()">التالي</button>
-    </div>
+    <iframe src="https://quran.com/juz/1?view=reading" loading="lazy"></iframe>
 </div>
 
+<img src="https://hitwebcounter.com/counter/counter.php?page=wirdquran_shamsia&style=0006&nbdigits=5&type=page&initCount=0" style="opacity:0.1; height:1px;">
+
 <script>
-    let currentPage = 1; 
-
-    function updatePage() {
-        // نستخدم رابط بديل موثوق
-        const imgUrl = `https://mushaf.me/raw/p/${currentPage}.png`;
-        document.getElementById("quran-img").src = imgUrl;
-        document.getElementById("page-num").innerText = currentPage;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // تعديل أزرار التالي والسابق لتعمل بشكل طبيعي مع أرقام الصفحات
-    function nextPage() { if (currentPage < 604) { currentPage++; updatePage(); } }
-    function prevPage() { if (currentPage > 1) { currentPage--; updatePage(); } }
-
     function toggleSebha() {
         const d = document.getElementById("sebha-display");
         d.style.display = (d.style.display === "block") ? "none" : "block";
     }
+
     function addCount() {
         let n = document.getElementById("count-num");
         n.innerText = parseInt(n.innerText) + 1;
+        if (navigator.vibrate) navigator.vibrate(50);
     }
+
+    function resetCount() {
+        document.getElementById("count-num").innerText = "0";
+    }
+
     function shareApp() {
-        const msg = `🌙 ورد 1 رمضان - صدقة جارية عن روح المرحومة شمسية أم شكري:\n${window.location.href}`;
+        const msg = `🌙 ورد 1 رمضان - صدقة جارية عن روح المرحومة شمسية أم شكري. تابع معي الورد والسبحة من هنا:\n${window.location.href}`;
         window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(msg));
     }
 </script>

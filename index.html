@@ -7,75 +7,64 @@
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2800/2800115.png">
     <style>
         :root { --primary: #2ecc71; --accent: #f1c40f; --bg: #0f2027; }
-        body { font-family: 'Segoe UI', sans-serif; background: #0f2027; color: white; margin: 0; padding: 10px; overflow-x: hidden; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f2027; color: white; margin: 0; padding: 10px; text-align: center; }
         
-        /* تصميم الصدقة الجارية */
-        .charity-header { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 10px; border-radius: 15px; font-weight: bold; font-size: 0.9rem; margin-bottom: 10px; text-align: center; }
+        .charity-header { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 10px; border-radius: 15px; font-weight: bold; margin-bottom: 10px; }
+        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; }
         
-        .ramadan-header { background: linear-gradient(45deg, #1e3c72, #2a5298); color: #fff; padding: 15px; border-radius: 20px; font-weight: bold; margin-bottom: 10px; text-align: center; }
-        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; text-align: center; }
+        select { width: 100%; padding: 8px; border-radius: 10px; background: #1e3c72; color: white; border: none; margin-bottom: 10px; }
+        .audio-player { width: 100%; height: 35px; margin: 5px 0; }
         
-        h1 { font-size: 1.2rem; color: var(--primary); margin: 5px 0; }
-        .juz-badge { color: var(--accent); font-weight: bold; font-size: 1.1rem; margin: 5px 0; display: block; }
+        .dua-box { background: rgba(46, 204, 113, 0.1); padding: 10px; border-radius: 12px; font-style: italic; font-size: 0.85rem; border-right: 4px solid var(--primary); margin: 10px 0; text-align: right; }
         
-        .audio-player { width: 100%; margin: 10px 0; height: 35px; border-radius: 10px; }
-        
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        button { padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.85rem; }
-        .btn-sebha { background: var(--accent); color: #000; }
-        .btn-share { background: #25D366; color: white; }
-
-        .quran-view { width: 100%; height: 70vh; border-radius: 15px; border: 1px solid var(--primary); background: white; }
-        
-        #sebha-display { display: none; margin-top: 10px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 10px; }
+        .quran-view { width: 100%; height: 65vh; border-radius: 15px; border: 1px solid var(--primary); background: white; }
+        .btn-share { width: 100%; background: #25D366; color: white; padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="charity-header">
-    🤍 صدقة جارية عن روح المرحومة (شمسية أم شكري) <br>
-    <span style="font-size: 0.7rem; font-weight: normal; color: #fff;">نسألكم الفاتحة والدعاء لها بالرحمة والمغفرة</span>
-</div>
-
-<div class="ramadan-header">
-    🌙 مبارك عليكم الشهر <br>
-    <span style="font-size: 0.8rem; font-weight: normal;">تقبل الله منا ومنكم صالح الأعمال</span>
+    🤍 صدقة جارية عن روح المرحومة (شمسية أم شكري)
 </div>
 
 <div class="glass-card">
-    <h1>✨ ورد اليوم الأول</h1>
-    <span id="juz-name" class="juz-badge">الجزء رقم 1</span>
-    
+    <p style="margin: 0 0 5px 0; font-size: 0.9rem;">اختر القارئ المفضل:</p>
+    <select id="reciter-select" onchange="updateAudio()">
+        <option value="muhammad_siddeeq_al-minshaawee">المنشاوي (مجود)</option>
+        <option value="husary">الحصري</option>
+        <option value="maher_muaiqly">ماهر المعيقلي</option>
+        <option value="abdul_basit_murattal">عبد الباسط عبد الصمد</option>
+    </select>
+
     <audio id="audio-player" class="audio-player" controls>
         <source id="audio-source" src="https://download.quranicaudio.com/quran/muhammad_siddeeq_al-minshaawee/juz01.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="btn-grid">
-        <button class="btn-sebha" onclick="toggleSebha()">📿 السبحة الإلكترونية</button>
-        <button class="btn-share" onclick="shareApp()">📢 انشر الأجر</button>
+    <div class="dua-box">
+        <b>دعاء اليوم:</b> <span id="daily-dua">اللهم اغفر لها وارحمها، وعافها واعفُ عنها، وأكرم نزلها، ووسع مدخلها.</span>
     </div>
 
-    <div id="sebha-display">
-        <div style="font-size: 1.5rem; color: var(--accent);" id="count-num">0</div>
-        <button onclick="addCount()" style="width:100%; background:var(--primary); color:white; margin-top:5px;">سبّح</button>
-    </div>
+    <button class="btn-share" onclick="shareApp()">📢 انشر الموقع لزيادة الأجر</button>
 </div>
 
 <iframe id="quran-frame" class="quran-view" src="https://quran.com/juz/1?view=reading"></iframe>
 
 <script>
-    function toggleSebha() {
-        const d = document.getElementById("sebha-display");
-        d.style.display = (d.style.display === "block") ? "none" : "block";
-    }
-    function addCount() {
-        let sCount = parseInt(document.getElementById("count-num").innerText);
-        sCount++;
-        document.getElementById("count-num").innerText = sCount;
+    const juz = 1; // ثابت لليوم الأول من رمضان
+
+    function updateAudio() {
+        const reciter = document.getElementById("reciter-select").value;
+        const player = document.getElementById("audio-player");
+        const source = document.getElementById("audio-source");
+        const juzStr = juz.toString().padStart(2, '0');
+        
+        source.src = `https://download.quranicaudio.com/quran/${reciter}/juz${juzStr}.mp3`;
+        player.load();
+        player.play();
     }
 
     function shareApp() {
-        const msg = `🌙 ورد 1 رمضان - صدقة جارية عن روح المرحومة شمسية أم شكري. تابع معي الورد اليومي:\n${window.location.href}`;
+        const msg = `🌙 ورد 1 رمضان - صدقة جارية عن روح المرحومة شمسية أم شكري. شاركنا الأجر بالقراءة والاستماع:\n${window.location.href}`;
         window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(msg));
     }
 </script>

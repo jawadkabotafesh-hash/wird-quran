@@ -4,82 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مصحف وردي - صدقة جارية</title>
-    
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2610/2610118.png">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2610/2610118.png">
-
     <style>
-        :root { --primary: #2ecc71; --accent: #f1c40f; --bg: #0f2027; }
-        body { font-family: 'Segoe UI', sans-serif; background: #0f2027; color: white; margin: 0; padding: 10px; text-align: center; }
-        
-        /* الهيدر وشعار المصحف */
-        .logo-img { width: 50px; margin-bottom: 10px; }
-        .charity-header { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 12px; border-radius: 15px; font-weight: bold; margin-bottom: 10px; }
-        
-        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 5px; }
-        
-        h1 { font-size: 1.2rem; color: var(--primary); margin: 5px 0; }
-        .juz-badge { color: var(--accent); font-weight: bold; font-size: 1.1rem; margin-bottom: 15px; display: block; }
+        :root {
+            --primary: #2ecc71;
+            --accent: #f1c40f;
+            --bg: #0f2027;
+            --btn-hover: #27ae60;
+        }
 
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        button { padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .btn-sebha { background: var(--accent); color: #000; }
-        .btn-share { background: #25D366; color: white; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            margin: 0;
+            padding: 10px;
+            text-align: center;
+        }
 
-        .designer-credit { font-size: 12px; color: var(--accent); margin-top: 12px; font-weight: bold; opacity: 0.9; }
+        .logo-img {
+            width: 60px;
+            margin-bottom: 10px;
+        }
 
-        .quran-container { width: 100%; height: 70vh; border-radius: 20px; overflow: hidden; border: 2px solid var(--primary); background: white; margin-top: 10px; }
-        iframe { width: 100%; height: 100%; border: none; }
+        .charity-header {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
 
-        #sebha-display { display: none; margin-top: 10px; padding: 15px; background: rgba(46, 204, 113, 0.2); border-radius: 15px; border: 1px solid var(--primary); }
-    </style>
-</head>
-<body>
-
-<img src="https://cdn-icons-png.flaticon.com/512/2610/2610118.png" alt="مصحف" class="logo-img">
-
-<div class="charity-header">
-    🤍 صدقة جارية عن روح المرحومة (شمسية أم شكري) <br>
-    <span style="font-size: 0.75rem; font-weight: normal; color: #fff;">نسألكم الفاتحة والدعاء لها بالرحمة والمغفرة</span>
-</div>
-
-<div class="glass-card">
-    <h1>✨ ورد اليوم الأول</h1>
-    <span class="juz-badge">الجزء رقم 1</span>
-
-    <div class="btn-grid">
-        <button class="btn-sebha" onclick="toggleSebha()">📿 السبحة الإلكترونية</button>
-        <button class="btn-share" onclick="shareApp()">📢 انشر الأجر</button>
-    </div>
-    
-    <div class="designer-credit">تصميم جواد البشتاوي</div>
-
-    <div id="sebha-display">
-        <div id="count-num" style="font-size: 2rem; color: var(--accent); margin-bottom: 10px;">0</div>
-        <button onclick="addCount()" style="width: 70px; height: 70px; border-radius: 50%; background: var(--primary); border: none; color: white; cursor: pointer;">سبّح</button>
-    </div>
-</div>
-
-<div class="quran-container">
-    <iframe id="quran-frame" src="https://quran.com/juz/1?view=reading"></iframe>
-</div>
-
-<script>
-    function toggleSebha() {
-        const d = document.getElementById("sebha-display");
-        d.style.display = (d.style.display === "block") ? "none" : "block";
-    }
-
-    function addCount() {
-        let n = document.getElementById("count-num");
-        n.innerText = parseInt(n.innerText) + 1;
-    }
-
-    function shareApp() {
-        const msg = `🌙 ورد 1 رمضان - صدقة جارية عن روح المرحومة شمسية أم شكري. تصميم جواد البشتاوي. تابع معي الورد والسبحة:\n${window.location.href}`;
-        window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(msg));
-    }
-</script>
-
-</body>
-</html>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            ba

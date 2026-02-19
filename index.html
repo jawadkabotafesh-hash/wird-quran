@@ -3,37 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق وردي - صدقة جارية</title>
+    <title>مصحف وردي - صدقة جارية</title>
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2800/2800115.png">
     <style>
         :root { --primary: #2ecc71; --accent: #f1c40f; --bg: #0f2027; }
-        body { font-family: 'Segoe UI', sans-serif; background: #0f2027; color: white; margin: 0; padding: 10px; text-align: center; overflow-x: hidden; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f2027; color: white; margin: 0; padding: 10px; text-align: center; }
         
-        /* الهيدر الخاص بالصدقة */
-        .charity-header { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 12px; border-radius: 15px; font-weight: bold; margin-bottom: 10px; font-size: 0.95rem; }
+        .charity-header { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 12px; border-radius: 15px; font-weight: bold; margin-bottom: 10px; }
+        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 5px; }
         
-        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; }
-        
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-        button { padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .selector-container { display: flex; gap: 10px; margin-bottom: 15px; }
+        select { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #1e3c72; color: white; font-weight: bold; cursor: pointer; }
+
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button { padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; }
         .btn-sebha { background: var(--accent); color: #000; }
         .btn-share { background: #25D366; color: white; }
 
-        /* منطقة السبحة */
-        #sebha-display { display: none; margin-top: 10px; padding: 15px; background: rgba(46, 204, 113, 0.2); border-radius: 15px; border: 1px solid var(--primary); }
-        #count-num { font-size: 2.5rem; color: var(--accent); display: block; margin-bottom: 10px; }
-
-        /* حاوية المصحف السلسة جداً */
-        .quran-container { 
-            width: 100%; 
-            height: 75vh; 
-            border-radius: 20px; 
-            overflow: hidden; 
-            border: 2px solid var(--primary); 
-            background: white; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        /* تعديل ظهور اسمك ليكون أوضح */
+        .designer-credit { 
+            font-size: 12px; 
+            color: var(--accent); 
+            margin-top: 12px; 
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
         }
+
+        .quran-container { width: 100%; height: 65vh; border-radius: 20px; overflow: hidden; border: 2px solid var(--primary); background: white; margin-top: 10px; }
         iframe { width: 100%; height: 100%; border: none; }
+
+        #sebha-display { display: none; margin-top: 10px; padding: 15px; background: rgba(46, 204, 113, 0.2); border-radius: 15px; border: 1px solid var(--primary); }
     </style>
 </head>
 <body>
@@ -44,28 +44,45 @@
 </div>
 
 <div class="glass-card">
-    <div style="font-size: 1.1rem; color: var(--primary); font-weight: bold; margin-bottom: 10px;">🌙 ورد 1 رمضان - الجزء الأول</div>
-    
+    <div class="selector-container">
+        <select id="surah-select" onchange="changeSurah()">
+            <option value="1">اختر السورة...</option>
+        </select>
+    </div>
+
     <div class="btn-grid">
         <button class="btn-sebha" onclick="toggleSebha()">📿 السبحة الإلكترونية</button>
         <button class="btn-share" onclick="shareApp()">📢 انشر الأجر</button>
     </div>
+    
+    <div class="designer-credit">تصميم جواد البشتاوي</div>
 
     <div id="sebha-display">
-        <span id="count-num">0</span>
-        <button onclick="addCount()" style="width: 80px; height: 80px; border-radius: 50%; background: var(--primary); border: none; color: white; font-size: 1.2rem; cursor: pointer;">سبّح</button>
-        <br>
-        <button onclick="resetCount()" style="background:transparent; color:red; margin-top:10px; font-size:0.7rem;">تصفير</button>
+        <div id="count-num" style="font-size: 2rem; color: var(--accent); margin-bottom: 10px;">0</div>
+        <button onclick="addCount()" style="width: 70px; height: 70px; border-radius: 50%; background: var(--primary); border: none; color: white; cursor: pointer;">سبّح</button>
     </div>
 </div>
 
 <div class="quran-container">
-    <iframe src="https://quran.com/juz/1?view=reading" loading="lazy"></iframe>
+    <iframe id="quran-frame" src="https://quran.com/1?view=reading"></iframe>
 </div>
 
-<img src="https://hitwebcounter.com/counter/counter.php?page=wirdquran_shamsia&style=0006&nbdigits=5&type=page&initCount=0" style="opacity:0.1; height:1px;">
-
 <script>
+    const surahs = ["الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس", "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه", "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس", "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد", "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"];
+
+    const select = document.getElementById('surah-select');
+    surahs.forEach((name, index) => {
+        let opt = document.createElement('option');
+        opt.value = index + 1;
+        opt.innerHTML = `${index + 1}. سورة ${name}`;
+        select.appendChild(opt);
+    });
+
+    function changeSurah() {
+        const surahId = document.getElementById('surah-select').value;
+        document.getElementById('quran-frame').src = `https://quran.com/${surahId}?view=reading`;
+    }
+
     function toggleSebha() {
         const d = document.getElementById("sebha-display");
         d.style.display = (d.style.display === "block") ? "none" : "block";
@@ -74,15 +91,10 @@
     function addCount() {
         let n = document.getElementById("count-num");
         n.innerText = parseInt(n.innerText) + 1;
-        if (navigator.vibrate) navigator.vibrate(50);
-    }
-
-    function resetCount() {
-        document.getElementById("count-num").innerText = "0";
     }
 
     function shareApp() {
-        const msg = `🌙 ورد 1 رمضان - صدقة جارية عن روح المرحومة شمسية أم شكري. تابع معي الورد والسبحة من هنا:\n${window.location.href}`;
+        const msg = `🌙 تطبيق المصحف الكامل - صدقة جارية عن روح المرحومة شمسية أم شكري. تصميم جواد البشتاوي. اقرأ وسبّح من هنا:\n${window.location.href}`;
         window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(msg));
     }
 </script>

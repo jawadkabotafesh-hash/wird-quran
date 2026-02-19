@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>وردي - 1 رمضان</title>
+    <title>وردي - صدقة جارية</title>
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2800/2800115.png">
     <style>
         :root { --primary: #2ecc71; --accent: #f1c40f; --bg: #0f2027; }
         body { font-family: 'Segoe UI', sans-serif; background: #0f2027; color: white; margin: 0; padding: 10px; overflow-x: hidden; }
         
-        /* بطاقة التهنئة برمضان */
-        .ramadan-header { background: linear-gradient(45deg, #1e3c72, #2a5298); color: #fff; padding: 15px; border-radius: 20px; font-weight: bold; margin-bottom: 10px; border: 1px solid var(--accent); }
-        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; }
+        /* تصميم الصدقة الجارية */
+        .charity-header { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 10px; border-radius: 15px; font-weight: bold; font-size: 0.9rem; margin-bottom: 10px; text-align: center; }
+        
+        .ramadan-header { background: linear-gradient(45deg, #1e3c72, #2a5298); color: #fff; padding: 15px; border-radius: 20px; font-weight: bold; margin-bottom: 10px; text-align: center; }
+        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; text-align: center; }
         
         h1 { font-size: 1.2rem; color: var(--primary); margin: 5px 0; }
         .juz-badge { color: var(--accent); font-weight: bold; font-size: 1.1rem; margin: 5px 0; display: block; }
@@ -23,12 +25,17 @@
         .btn-sebha { background: var(--accent); color: #000; }
         .btn-share { background: #25D366; color: white; }
 
-        .quran-view { width: 100%; height: 75vh; border-radius: 15px; border: 1px solid var(--primary); background: white; }
+        .quran-view { width: 100%; height: 70vh; border-radius: 15px; border: 1px solid var(--primary); background: white; }
         
         #sebha-display { display: none; margin-top: 10px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 10px; }
     </style>
 </head>
 <body>
+
+<div class="charity-header">
+    🤍 صدقة جارية عن روح المرحومة (شمسية أم شكري) <br>
+    <span style="font-size: 0.7rem; font-weight: normal; color: #fff;">نسألكم الفاتحة والدعاء لها بالرحمة والمغفرة</span>
+</div>
 
 <div class="ramadan-header">
     🌙 مبارك عليكم الشهر <br>
@@ -57,9 +64,6 @@
 <iframe id="quran-frame" class="quran-view" src="https://quran.com/juz/1?view=reading"></iframe>
 
 <script>
-    // تعديل التاريخ ليكون اليوم هو 1 رمضان (الجزء 1)
-    const juz = 1; 
-
     function toggleSebha() {
         const d = document.getElementById("sebha-display");
         d.style.display = (d.style.display === "block") ? "none" : "block";
@@ -71,8 +75,8 @@
     }
 
     function shareApp() {
-        const msg = `🌙 بدأنا اليوم وردنا لـ 1 رمضان! تابع معي الورد اليومي (مصحف وصوت وسبحة) من هنا:\n${window.location.href}`;
-        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`);
+        const msg = `🌙 ورد 1 رمضان - صدقة جارية عن روح المرحومة شمسية أم شكري. تابع معي الورد اليومي:\n${window.location.href}`;
+        window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(msg));
     }
 </script>
 
